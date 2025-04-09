@@ -10,8 +10,8 @@
         aws_access_key: "{{ aws_access_key }}"
         aws_secret_key: "{{ aws_secret_key }}"
         command: create
-        hosted_zone_id: "Z10295662V8DKR74AYF3B"
-        record: "{{ record }}.cafecomrock.com.br"
+        hosted_zone_id: "Z0061939969FLQU6SGN4"
+        record: "{{ record }}.maestriatec.com.br"
         type: A
         value: "{{ ip }}"
 
