@@ -1,0 +1,17 @@
+- name: Install packages
+  hosts: all
+  become: true
+  tasks:
+    - name: Install packages on RedHat-based distros
+      yum:
+        name: "{{ packages }}"
+        state: latest
+      when: ansible_os_family == "RedHat"
+
+    - name: Install packages on Debian-based distros
+      apt:
+        name: "{{ packages }}"
+        state: latest
+        update_cache: yes
+      when: ansible_os_family == "Debian"
+

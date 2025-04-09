@@ -1,0 +1,42 @@
+- name: Configurar resolv.conf e /etc/hosts
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Configurar /etc/resolv.conf
+      copy:
+        dest: /etc/resolv.conf
+        content: |
+          nameserver 192.168.18.49
+          nameserver 8.8.8.8
+          options edns0 trust-ad
+          search maestriatec.local
+      notify: Restart Network Service
+
+    - name: Configurar /etc/hosts
+      copy:
+        dest: /etc/hosts
+        content: |
+          127.0.0.1   localhost
+          127.0.1.1   {{ ansible_hostname }}
+          192.168.18.100  awx.sysadmin.local    awx
+          192.168.18.41   debian
+          192.168.18.45   rocky
+          192.168.18.48   terraform
+          192.168.18.49   winsserveraddc.maestriatec.local winsserveraddc
+          192.168.18.58   centos
+      notify: Restart Network Service
+
+  handlers:
+    - name: Restart Network Service
+      command: |
+        bash -c '
+          if systemctl is-active --quiet NetworkManager; then
+            systemctl restart NetworkManager;
+          elif systemctl is-active --quiet networking; then
+            systemctl restart networking;
+          elif systemctl is-active --quiet systemd-networkd; then
+            systemctl restart systemd-networkd;
+          fi
+        '
+

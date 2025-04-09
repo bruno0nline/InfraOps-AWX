@@ -1,0 +1,13 @@
+---
+
+- name: Playbook de exemplo - Teste AWX
+  hosts: all
+  tasks:
+    
+    - name: Verificar conexão com os hosts
+      ping:
+
+    - name: Exibir todos os fatos disponíveis
+      ansible.builtin.debug:
+        var: ansible_facts
+...

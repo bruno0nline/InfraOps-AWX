@@ -1,0 +1,49 @@
+---
+- name: Join Linux servers to AD
+  hosts: all
+  become: yes
+  vars:
+    ad_user: "{{ ad_user }}"
+    ad_password: "{{ ad_password }}"
+    ad_domain: maestriatec.local
+    ad_group: "{{ ad_group }}"
+
+  tasks:
+    - name: Install required packages on Debian
+      apt:
+        name:
+          - sssd
+          - realmd
+          - adcli
+          - samba-common
+          - packagekit
+          - krb5-user
+        state: present
+        update_cache: yes
+      when: ansible_os_family == 'Debian'
+
+    - name: Install required packages on RedHat
+      yum:
+        name:
+          - sssd
+          - realmd
+          - adcli
+          - samba-common
+          - oddjob
+          - oddjob-mkhomedir
+          - krb5-workstation
+        state: present
+      when: ansible_os_family == 'RedHat'
+
+    - name: Join the machine to the domain (via stdin)
+      shell: |
+        echo "{{ ad_password }}" | realm join --user={{ ad_user }} {{ ad_domain }}
+      when: ansible_os_family in ['Debian', 'RedHat']
+
+    - name: Configure sudoers file for AD users
+      lineinfile:
+        path: /etc/sudoers
+        line: '"%{{ ad_group }} ALL=(ALL) ALL"'
+        validate: visudo -cf %s
+      when: ansible_os_family in ['Debian', 'RedHat']
+

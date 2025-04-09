@@ -1,0 +1,11 @@
+---
+
+- name: Install Apache on Debian
+  hosts: all
+  tasks: 
+    - name: APT | Update System
+      apt: 
+        name: apache2
+        state: latest
+
+...

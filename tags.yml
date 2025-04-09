@@ -1,0 +1,42 @@
+---
+- name: Playbook default
+  hosts: all
+  vars:
+    password: "123456"
+  tasks:
+    - name: SISOP | Change /etc/profile
+      lineinfile: dest=/etc/profile line={{ item }}
+      with_items:
+        - '#--- Default export & Alias ---#'
+        - 'export HISTTIMEFORMAT="%d/%m/%Y - %H:%M:%S - "'
+        - 'export HISTSIZE="5000"'
+        - 'export HISTFILESIZE="5000"'
+        - 'export TERM=linux'
+        - 'alias ls="ls -lh --color"'
+        - 'alias grep="grep --color"'
+        - 'alias vi="vim"'
+        - 'alias rm="rm -i"'
+      tags:
+        - profile
+        - perfil
+
+    - name: SISOP | Disable SELINUX
+      replace:
+        dest=/etc/selinux/config
+        regexp='SELINUX=enforcing'
+        replace='SELINUX=disabled'
+      tags: selinux
+
+    - name: YUM | Update System
+      yum: name=* state=latest update_cache=yes
+      tags: update
+
+    - name: USERS | Change root password
+      user:
+        name: root
+        update_password: always
+        password: "{{ '{{ password }}' | password_hash('sha512', 'mysecretsalt') }}"
+      tags:
+        - password
+        - senha
+...
