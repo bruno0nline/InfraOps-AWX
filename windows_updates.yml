@@ -1,7 +1,7 @@
 ---
 - name: Atualizar Windows com Ansible
-  hosts: "Windows Server 2022"
   gather_facts: no
+  hosts: all
   tasks:
     - name: Verifica atualizações disponíveis
       win_updates:
