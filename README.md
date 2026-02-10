@@ -27,6 +27,13 @@ Este repositório contém playbooks Ansible para automatizar tarefas comuns de i
 
 ```
 InfraOps-AWX/
+├── README.md                      # Documentação principal
+├── LICENSE                        # Licença MIT
+├── CONTRIBUTING.md                # Guia de contribuição
+├── INVENTORY_EXAMPLE.md           # Exemplos de inventário
+├── .gitignore                     # Arquivos ignorados pelo Git
+├── ansible.cfg.optimized          # Configuração otimizada do Ansible
+│
 ├── adduser.yml                    # Criação de usuários
 ├── config_dhcp.yml                # Configuração DHCP
 ├── install-apache.yml             # Instalação Apache
@@ -40,6 +47,7 @@ InfraOps-AWX/
 ├── site.yml                       # Playbook principal de exemplo
 ├── tags.yml                       # Exemplo de uso de tags
 ├── windows_updates.yml            # Atualização de sistemas Windows
+│
 └── collections/
     └── requirements.yml           # Dependências de collections
 ```

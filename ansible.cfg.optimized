@@ -1,0 +1,13 @@
+[defaults]
+inventory = inventories/hosts
+host_key_checking = False
+retry_files_enabled = False
+gathering = smart
+stdout_callback = yaml
+
+[privilege_escalation]
+become = True
+become_method = sudo
+
+[ssh_connection]
+pipelining = True
